@@ -105,7 +105,7 @@ export class Expression {
                 if (op == 'batchGet') {
                     //  BatchGet params.project must provide attributes not properties
                     this.project.push(`#_${this.addName(name)}`)
-                } else if (fields[name]) {
+                } else if (fields[name] && fields[name].encode !== true) {
                     let att = fields[name].attribute[0]
                     this.project.push(`#_${this.addName(att)}`)
                 }
@@ -176,7 +176,7 @@ export class Expression {
         } else {
             if ((op == 'find' || op == 'scan')) {
                 //  schema.filter == false disables a field from being used in a filter
-                if (properties[field.name] !== undefined && field.filter !== false) {
+                if (properties[field.name] !== undefined && field.filter !== false && field.encode !== true && field.encode !== false) {
                     if (!this.params.batch) {
                         //  Batch does not support filter expressions
                         this.addFilter(field, value)

@@ -996,9 +996,11 @@ export class Model {
             }
             let value = raw[att]
             if (value === undefined) {
-                if (field.encode) {
+                if (field.encode && field.encode !== true && field.encode !== false) {
                     let [att, sep, index] = field.encode
                     value = (raw[att] || '').split(sep)[index]
+                } else if (field.encode === true && field.type === Object) {
+                    value = {}
                 }
                 if (value === undefined) {
                     continue
